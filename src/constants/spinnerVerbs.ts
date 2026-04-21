@@ -14,6 +14,19 @@ export function getSpinnerVerbs(): string[] {
 
 // Spinner verbs for loading messages
 export const SPINNER_VERBS = [
+  'ibusnowdening',
+  'sonkolait',
+  'Baysoggy',
+  'thiokering',
+  'pinning',
+  'stopthinking',
+  'noworry',
+  'yougothis',
+  'fktheytlkabout',
+  'yknwhamsaying',
+  'memphis',
+  'senegambia',
+  'ratatatirek',
   'Accomplishing',
   'Actioning',
   'Actualizing',
