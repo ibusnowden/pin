@@ -287,7 +287,45 @@ export async function* queryModelLocalStreaming({
     return
   }
 
-  if (!response.ok) {
+  // On context-overflow (HTTP 400), parse the vLLM error for actual token counts
+  // and retry once with a reduced max_tokens that fits within the model's limit.
+  if (!response.ok && response.status === 400) {
+    const errText = await response.text().catch(() => '')
+    let retried = false
+    try {
+      const errJson = JSON.parse(errText) as { error?: { message?: string } }
+      const msg = errJson?.error?.message ?? ''
+      const limitMatch = msg.match(/maximum context length is (\d+)/)
+      const inputMatch = msg.match(/prompt contains at least (\d+) input tokens/)
+      if (limitMatch && inputMatch) {
+        const contextLimit = parseInt(limitMatch[1]!, 10)
+        const inputTokens = parseInt(inputMatch[1]!, 10)
+        const safeMaxTokens = contextLimit - inputTokens - 256
+        if (safeMaxTokens > 0) {
+          body.max_tokens = safeMaxTokens
+          response = await fetch(`${baseUrl}/chat/completions`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${apiKey}`,
+            },
+            body: JSON.stringify(body),
+            signal,
+          })
+          retried = true
+        }
+      }
+    } catch {
+      // fall through to original error below
+    }
+    if (!retried || !response.ok) {
+      const text = retried ? await response.text().catch(() => '') : errText
+      yield createAssistantMessage({
+        content: `Local vLLM request failed (HTTP ${response.status}): ${text}`,
+      }) as unknown as AssistantMessage
+      return
+    }
+  } else if (!response.ok) {
     const text = await response.text().catch(() => '')
     yield createAssistantMessage({
       content: `Local vLLM request failed (HTTP ${response.status}): ${text}`,
@@ -370,7 +408,7 @@ export async function* queryModelLocalStreaming({
   const contentBlocks: BetaContentBlock[] = []
 
   if (accText) {
-    contentBlocks.push({ type: 'text', text: accText })
+    contentBlocks.push({ type: 'text', text: accText, citations: [] })
   }
 
   for (const [, tc] of accToolCalls) {
@@ -389,7 +427,7 @@ export async function* queryModelLocalStreaming({
   }
 
   if (contentBlocks.length === 0) {
-    contentBlocks.push({ type: 'text', text: '' })
+    contentBlocks.push({ type: 'text', text: '', citations: [] })
   }
 
   const assistantMsg = createAssistantMessage({

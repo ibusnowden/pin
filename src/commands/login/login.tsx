@@ -37,7 +37,7 @@ export async function call(
       onDone={async success => {
         context.onChangeAPIKey()
         // Signature-bearing blocks are bound to the API key. Strip them so the
-        // new Kimi key does not reject stale signatures.
+        // new Pincode key does not reject stale signatures.
         context.setMessages(stripSignatureBlocks)
         if (success) {
           resetCostState()
@@ -66,13 +66,13 @@ export async function call(
             authVersion: prev.authVersion + 1,
           }))
         }
-        onDone(success ? 'Kimi API key saved' : 'Login interrupted')
+        onDone(success ? 'Pincode API key saved' : 'Login interrupted')
       }}
     />
   )
 }
 
-export function KimiApiKeyForm(props: {
+export function PincodeApiKeyForm(props: {
   onDone: (success: boolean) => void
   startingMessage?: string
 }): React.ReactNode {
@@ -85,7 +85,7 @@ export function KimiApiKeyForm(props: {
   async function handleSubmit(value = apiKey) {
     const trimmed = value.trim()
     if (!trimmed) {
-      setError('Enter a Kimi API key.')
+      setError('Enter a Pincode API key.')
       return
     }
 
@@ -94,7 +94,7 @@ export function KimiApiKeyForm(props: {
     try {
       const valid = await verifyApiKey(trimmed, false)
       if (!valid) {
-        setError('Kimi API key was rejected. Paste a valid Moonshot API key.')
+        setError('Pincode API key was rejected. Paste a valid local vLLM API key.')
         setIsSaving(false)
         return
       }
@@ -130,7 +130,7 @@ export function KimiApiKeyForm(props: {
         onChangeCursorOffset={setCursorOffset}
         showCursor={true}
       />
-      {isSaving && <Text dimColor>Validating Kimi API key...</Text>}
+      {isSaving && <Text dimColor>Validating Pincode API key...</Text>}
       {error && <Text color="error">{error}</Text>}
     </Box>
   )
@@ -146,7 +146,7 @@ export function Login(props: {
 
   return (
     <Dialog
-      title="Kimi API key"
+      title="Pincode API key"
       onCancel={handleCancel}
       color="permission"
       inputGuide={exitState =>
@@ -162,7 +162,7 @@ export function Login(props: {
         )
       }
     >
-      <KimiApiKeyForm
+      <PincodeApiKeyForm
         onDone={handleDone}
         startingMessage={props.startingMessage}
       />

@@ -1,6 +1,6 @@
 # CLAUDE.md
 
-This file provides guidance to coding agents when working with Fabric.
+This file provides guidance to coding agents when working with Pincode.
 
 ## Common commands
 

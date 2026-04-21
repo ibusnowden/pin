@@ -565,40 +565,34 @@ export function parseMaxTokensContextOverflowError(error: APIError):
     return undefined
   }
 
-  if (
-    !error.message.includes(
-      'input length and `max_tokens` exceed context limit',
-    )
-  ) {
-    return undefined
+  // Anthropic API format: "input length and `max_tokens` exceed context limit: 188059 + 20000 > 200000"
+  const anthropicMatch = error.message.match(
+    /input length and `max_tokens` exceed context limit: (\d+) \+ (\d+) > (\d+)/,
+  )
+  if (anthropicMatch && anthropicMatch.length === 4) {
+    const inputTokens = parseInt(anthropicMatch[1]!, 10)
+    const maxTokens = parseInt(anthropicMatch[2]!, 10)
+    const contextLimit = parseInt(anthropicMatch[3]!, 10)
+    if (!isNaN(inputTokens) && !isNaN(maxTokens) && !isNaN(contextLimit)) {
+      return { inputTokens, maxTokens, contextLimit }
+    }
   }
 
-  // Example format: "input length and `max_tokens` exceed context limit: 188059 + 20000 > 200000"
-  const regex =
-    /input length and `max_tokens` exceed context limit: (\d+) \+ (\d+) > (\d+)/
-  const match = error.message.match(regex)
-
-  if (!match || match.length !== 4) {
-    return undefined
+  // vLLM format: "This model's maximum context length is 262144 tokens. However,
+  // you requested 32000 output tokens and your prompt contains at least 230145 input tokens"
+  const vllmMatch = error.message.match(
+    /maximum context length is (\d+) tokens\.\s*However, you requested (\d+) output tokens and your prompt contains at least (\d+) input tokens/,
+  )
+  if (vllmMatch && vllmMatch.length === 4) {
+    const contextLimit = parseInt(vllmMatch[1]!, 10)
+    const maxTokens = parseInt(vllmMatch[2]!, 10)
+    const inputTokens = parseInt(vllmMatch[3]!, 10)
+    if (!isNaN(inputTokens) && !isNaN(maxTokens) && !isNaN(contextLimit)) {
+      return { inputTokens, maxTokens, contextLimit }
+    }
   }
 
-  if (!match[1] || !match[2] || !match[3]) {
-    logError(
-      new Error(
-        'Unable to parse max_tokens from max_tokens exceed context limit error message',
-      ),
-    )
-    return undefined
-  }
-  const inputTokens = parseInt(match[1], 10)
-  const maxTokens = parseInt(match[2], 10)
-  const contextLimit = parseInt(match[3], 10)
-
-  if (isNaN(inputTokens) || isNaN(maxTokens) || isNaN(contextLimit)) {
-    return undefined
-  }
-
-  return { inputTokens, maxTokens, contextLimit }
+  return undefined
 }
 
 // TODO: Replace with a response header check once the API adds a dedicated

@@ -112,7 +112,7 @@ Plugin syntax: \`plugin-name@source\` where source is \`claude-code-marketplace\
 
 const HOOKS_DOCS = `## Hooks Configuration
 
-Hooks run commands at specific points in Fabric's lifecycle.
+Hooks run commands at specific points in Pincode's lifecycle.
 
 ### Hook Structure
 \`\`\`json
@@ -309,7 +309,7 @@ Given an event, matcher, target file, and desired behavior, follow this flow. Ea
 
 const UPDATE_CONFIG_PROMPT = `# Update Config Skill
 
-Modify Fabric configuration by updating settings.json files.
+Modify Pincode configuration by updating settings.json files.
 
 ## When Hooks Are Required (Not Memory)
 
@@ -388,7 +388,7 @@ ${HOOK_VERIFICATION_FLOW}
 
 ### Adding a Hook
 
-User: "Format my code after Kimi writes it"
+User: "Format my code after Pincode writes it"
 
 1. **Clarify**: Which formatter? (prettier, gofmt, etc.)
 2. **Read**: \`.claude/settings.json\` (or create if missing)
@@ -449,7 +449,7 @@ export function registerUpdateConfigSkill(): void {
   registerBundledSkill({
     name: 'update-config',
     description:
-      'Use this skill to configure Fabric via settings.json. Automated behaviors ("from now on when X", "each time X", "whenever X", "before/after X") require hooks configured in settings.json - the harness executes these, not Fabric, so memory/preferences cannot fulfill them. Also use for: permissions ("allow X", "add permission", "move permission to"), env vars ("set X=Y"), hook troubleshooting, or any changes to settings.json/settings.local.json files. Examples: "allow npm commands", "add bq permission to global settings", "move permission to user settings", "set DEBUG=true", "when fabric stops show X". For simple settings like theme/model, use Config tool.',
+      'Use this skill to configure Pincode via settings.json. Automated behaviors ("from now on when X", "each time X", "whenever X", "before/after X") require hooks configured in settings.json - the harness executes these, not Pincode, so memory/preferences cannot fulfill them. Also use for: permissions ("allow X", "add permission", "move permission to"), env vars ("set X=Y"), hook troubleshooting, or any changes to settings.json/settings.local.json files. Examples: "allow npm commands", "add bq permission to global settings", "move permission to user settings", "set DEBUG=true", "when pincode stops show X". For simple settings like theme/model, use Config tool.',
     allowedTools: ['Read'],
     userInvocable: true,
     async getPromptForCommand(args) {

@@ -4,11 +4,11 @@ import { env } from './env.js'
 export type Theme = {
   autoAccept: string
   bashBorder: string
-  claude: string
+  pincode: string
   startupAccent: string
-  claudeShimmer: string // Lighter version of brand color for shimmer effect
-  claudeBlue_FOR_SYSTEM_SPINNER: string
-  claudeBlueShimmer_FOR_SYSTEM_SPINNER: string
+  pincodeShimmer: string // Lighter version of brand color for shimmer effect
+  pincodeBlue_FOR_SYSTEM_SPINNER: string
+  pincodeBlueShimmer_FOR_SYSTEM_SPINNER: string
   permission: string
   permissionShimmer: string // Lighter version of permission color for shimmer effect
   planMode: string
@@ -71,7 +71,7 @@ export type Theme = {
   fastModeShimmer: string
   // Brief/assistant mode label colors
   briefLabelYou: string
-  briefLabelClaude: string
+  briefLabelPincode: string
   // Rainbow colors for ultrathink keyword highlighting
   rainbow_red: string
   rainbow_orange: string
@@ -109,25 +109,25 @@ export const THEME_SETTINGS = ['auto', ...THEME_NAMES] as const
  */
 export type ThemeSetting = (typeof THEME_SETTINGS)[number]
 
-const KIMI_BLUE = 'rgb(212,175,55)'   // gold
-const KIMI_BLUE_SHIMMER = 'rgb(255,215,80)'
-const KIMI_BLUE_SOFT = 'rgb(255,240,180)'
-const KIMI_BLUE_DARK = 'rgb(139,100,10)'
+const PINCODE_BLUE = 'rgb(212,175,55)'   // gold
+const PINCODE_BLUE_SHIMMER = 'rgb(255,215,80)'
+const PINCODE_BLUE_SOFT = 'rgb(255,240,180)'
+const PINCODE_BLUE_DARK = 'rgb(139,100,10)'
 
 /**
  * Light theme using explicit RGB values to avoid inconsistencies
  * from users' custom terminal ANSI color definitions
  */
 const lightTheme: Theme = {
-  autoAccept: KIMI_BLUE,
-  bashBorder: KIMI_BLUE,
-  claude: KIMI_BLUE, // Legacy token, now Kimi blue
-  startupAccent: KIMI_BLUE,
-  claudeShimmer: KIMI_BLUE_SHIMMER,
-  claudeBlue_FOR_SYSTEM_SPINNER: KIMI_BLUE,
-  claudeBlueShimmer_FOR_SYSTEM_SPINNER: KIMI_BLUE_SHIMMER,
-  permission: KIMI_BLUE,
-  permissionShimmer: KIMI_BLUE_SHIMMER,
+  autoAccept: FABRIC_BLUE,
+  bashBorder: FABRIC_BLUE,
+  pincode: PINCODE_BLUE, // Legacy token, now Pincode blue
+  startupAccent: FABRIC_BLUE,
+  pincodeShimmer: PINCODE_BLUE_SHIMMER,
+  pincodeBlue_FOR_SYSTEM_SPINNER: PINCODE_BLUE,
+  pincodeBlueShimmer_FOR_SYSTEM_SPINNER: PINCODE_BLUE_SHIMMER,
+  permission: FABRIC_BLUE,
+  permissionShimmer: PINCODE_BLUE_SHIMMER,
   planMode: 'rgb(0,102,102)', // Muted teal
   ide: 'rgb(71,130,200)', // Muted blue
   promptBorder: 'rgb(153,153,153)', // Medium gray
@@ -137,13 +137,13 @@ const lightTheme: Theme = {
   inactive: 'rgb(102,102,102)', // Dark gray
   inactiveShimmer: 'rgb(142,142,142)', // Lighter gray for shimmer effect
   subtle: 'rgb(175,175,175)', // Light gray
-  suggestion: KIMI_BLUE,
-  remember: KIMI_BLUE,
+  suggestion: FABRIC_BLUE,
+  remember: FABRIC_BLUE,
   background: 'rgb(0,153,153)', // Cyan
   success: 'rgb(44,122,57)', // Green
   error: 'rgb(171,43,63)', // Red
   warning: 'rgb(150,108,30)', // Amber
-  merged: KIMI_BLUE,
+  merged: FABRIC_BLUE,
   warningShimmer: 'rgb(200,158,80)', // Lighter amber for shimmer effect
   diffAdded: 'rgb(105,219,124)', // Light green
   diffRemoved: 'rgb(255,168,180)', // Light red
@@ -161,26 +161,26 @@ const lightTheme: Theme = {
   pink_FOR_SUBAGENTS_ONLY: 'rgb(219,39,119)', // Pink 600
   cyan_FOR_SUBAGENTS_ONLY: 'rgb(8,145,178)', // Cyan 600
   // Grove colors
-  professionalBlue: KIMI_BLUE,
+  professionalBlue: FABRIC_BLUE,
   // Chrome colors
   chromeYellow: 'rgb(251,188,4)', // Chrome yellow
   // TUI V2 colors
-  clawd_body: KIMI_BLUE,
+  clawd_body: FABRIC_BLUE,
   clawd_background: 'rgb(0,0,0)',
   userMessageBackground: 'rgb(240, 240, 240)', // Slightly darker grey for optimal contrast
   userMessageBackgroundHover: 'rgb(252, 252, 252)', // ≥250 to quantize distinct from base at 256-color level
   messageActionsBackground: 'rgb(232, 236, 244)', // cool gray — darker than userMsg 240 (visible on white), slight blue toward `suggestion`
-  selectionBg: KIMI_BLUE_SOFT, // classic light-mode selection blue (macOS/VS Code-ish); dark fgs stay readable
+  selectionBg: PINCODE_BLUE_SOFT, // classic light-mode selection blue (macOS/VS Code-ish); dark fgs stay readable
   bashMessageBackgroundColor: 'rgb(250, 245, 250)',
 
   memoryBackgroundColor: 'rgb(230, 242, 255)',
-  rate_limit_fill: KIMI_BLUE,
-  rate_limit_empty: KIMI_BLUE_DARK,
-  fastMode: KIMI_BLUE,
-  fastModeShimmer: KIMI_BLUE_SHIMMER,
+  rate_limit_fill: FABRIC_BLUE,
+  rate_limit_empty: PINCODE_BLUE_DARK,
+  fastMode: FABRIC_BLUE,
+  fastModeShimmer: PINCODE_BLUE_SHIMMER,
   // Brief/assistant mode
-  briefLabelYou: KIMI_BLUE,
-  briefLabelClaude: KIMI_BLUE,
+  briefLabelYou: FABRIC_BLUE,
+  briefLabelPincode: PINCODE_BLUE,
   rainbow_red: 'rgb(235,95,87)',
   rainbow_orange: 'rgb(245,139,87)',
   rainbow_yellow: 'rgb(250,195,95)',
@@ -204,11 +204,11 @@ const lightTheme: Theme = {
 const lightAnsiTheme: Theme = {
   autoAccept: 'ansi:blueBright',
   bashBorder: 'ansi:blueBright',
-  claude: 'ansi:blueBright',
+  pincode: 'ansi:blueBright',
   startupAccent: 'ansi:blueBright',
-  claudeShimmer: 'ansi:blueBright',
-  claudeBlue_FOR_SYSTEM_SPINNER: 'ansi:blueBright',
-  claudeBlueShimmer_FOR_SYSTEM_SPINNER: 'ansi:blueBright',
+  pincodeShimmer: 'ansi:blueBright',
+  pincodeBlue_FOR_SYSTEM_SPINNER: 'ansi:blueBright',
+  pincodeBlueShimmer_FOR_SYSTEM_SPINNER: 'ansi:blueBright',
   permission: 'ansi:blueBright',
   permissionShimmer: 'ansi:blueBright',
   planMode: 'ansi:cyan',
@@ -262,7 +262,7 @@ const lightAnsiTheme: Theme = {
   fastMode: 'ansi:blueBright',
   fastModeShimmer: 'ansi:blueBright',
   briefLabelYou: 'ansi:blueBright',
-  briefLabelClaude: 'ansi:blueBright',
+  briefLabelPincode: 'ansi:blueBright',
   rainbow_red: 'ansi:red',
   rainbow_orange: 'ansi:redBright',
   rainbow_yellow: 'ansi:yellow',
@@ -286,11 +286,11 @@ const lightAnsiTheme: Theme = {
 const darkAnsiTheme: Theme = {
   autoAccept: 'ansi:blueBright',
   bashBorder: 'ansi:blueBright',
-  claude: 'ansi:blueBright',
+  pincode: 'ansi:blueBright',
   startupAccent: 'ansi:blueBright',
-  claudeShimmer: 'ansi:blueBright',
-  claudeBlue_FOR_SYSTEM_SPINNER: 'ansi:blueBright',
-  claudeBlueShimmer_FOR_SYSTEM_SPINNER: 'ansi:blueBright',
+  pincodeShimmer: 'ansi:blueBright',
+  pincodeBlue_FOR_SYSTEM_SPINNER: 'ansi:blueBright',
+  pincodeBlueShimmer_FOR_SYSTEM_SPINNER: 'ansi:blueBright',
   permission: 'ansi:blueBright',
   permissionShimmer: 'ansi:blueBright',
   planMode: 'ansi:cyanBright',
@@ -344,7 +344,7 @@ const darkAnsiTheme: Theme = {
   fastMode: 'ansi:blueBright',
   fastModeShimmer: 'ansi:blueBright',
   briefLabelYou: 'ansi:blueBright',
-  briefLabelClaude: 'ansi:blueBright',
+  briefLabelPincode: 'ansi:blueBright',
   rainbow_red: 'ansi:red',
   rainbow_orange: 'ansi:redBright',
   rainbow_yellow: 'ansi:yellow',
@@ -366,15 +366,15 @@ const darkAnsiTheme: Theme = {
  * to avoid inconsistencies from users' custom terminal ANSI color definitions
  */
 const lightDaltonizedTheme: Theme = {
-  autoAccept: KIMI_BLUE,
-  bashBorder: KIMI_BLUE,
-  claude: KIMI_BLUE, // Legacy token, now Kimi blue
-  startupAccent: KIMI_BLUE,
-  claudeShimmer: KIMI_BLUE_SHIMMER,
-  claudeBlue_FOR_SYSTEM_SPINNER: KIMI_BLUE,
-  claudeBlueShimmer_FOR_SYSTEM_SPINNER: KIMI_BLUE_SHIMMER,
-  permission: KIMI_BLUE,
-  permissionShimmer: KIMI_BLUE_SHIMMER,
+  autoAccept: FABRIC_BLUE,
+  bashBorder: FABRIC_BLUE,
+  pincode: PINCODE_BLUE, // Legacy token, now Pincode blue
+  startupAccent: FABRIC_BLUE,
+  pincodeShimmer: PINCODE_BLUE_SHIMMER,
+  pincodeBlue_FOR_SYSTEM_SPINNER: PINCODE_BLUE,
+  pincodeBlueShimmer_FOR_SYSTEM_SPINNER: PINCODE_BLUE_SHIMMER,
+  permission: FABRIC_BLUE,
+  permissionShimmer: PINCODE_BLUE_SHIMMER,
   planMode: 'rgb(51,102,102)', // Muted blue-gray (works for color-blind)
   ide: 'rgb(71,130,200)', // Muted blue
   promptBorder: 'rgb(153,153,153)', // Medium gray
@@ -384,13 +384,13 @@ const lightDaltonizedTheme: Theme = {
   inactive: 'rgb(102,102,102)', // Dark gray
   inactiveShimmer: 'rgb(142,142,142)', // Lighter gray for shimmer effect
   subtle: 'rgb(175,175,175)', // Light gray
-  suggestion: KIMI_BLUE,
-  remember: KIMI_BLUE,
+  suggestion: FABRIC_BLUE,
+  remember: FABRIC_BLUE,
   background: 'rgb(0,153,153)', // Cyan (color-blind friendly)
   success: 'rgb(0,102,153)', // Blue instead of green for deuteranopia
   error: 'rgb(204,0,0)', // Pure red for better distinction
   warning: 'rgb(255,153,0)', // Orange adjusted for deuteranopia
-  merged: KIMI_BLUE,
+  merged: FABRIC_BLUE,
   warningShimmer: 'rgb(255,183,50)', // Lighter orange for shimmer
   diffAdded: 'rgb(153,204,255)', // Light blue instead of green
   diffRemoved: 'rgb(255,204,204)', // Light red
@@ -408,25 +408,25 @@ const lightDaltonizedTheme: Theme = {
   pink_FOR_SUBAGENTS_ONLY: 'rgb(255,102,178)', // Adjusted pink
   cyan_FOR_SUBAGENTS_ONLY: 'rgb(0,178,178)', // Adjusted cyan
   // Grove colors
-  professionalBlue: KIMI_BLUE,
+  professionalBlue: FABRIC_BLUE,
   // Chrome colors
   chromeYellow: 'rgb(251,188,4)', // Chrome yellow
   // TUI V2 colors
-  clawd_body: KIMI_BLUE,
+  clawd_body: FABRIC_BLUE,
   clawd_background: 'rgb(0,0,0)',
   userMessageBackground: 'rgb(220, 220, 220)', // Slightly darker grey for optimal contrast
   userMessageBackgroundHover: 'rgb(232, 232, 232)', // ≥230 to quantize distinct from base at 256-color level
   messageActionsBackground: 'rgb(210, 216, 226)', // cool gray — darker than userMsg 220, slight blue
-  selectionBg: KIMI_BLUE_SOFT, // light selection blue; daltonized fgs are yellows/blues, both readable on light blue
+  selectionBg: PINCODE_BLUE_SOFT, // light selection blue; daltonized fgs are yellows/blues, both readable on light blue
   bashMessageBackgroundColor: 'rgb(250, 245, 250)',
 
   memoryBackgroundColor: 'rgb(230, 242, 255)',
-  rate_limit_fill: KIMI_BLUE,
-  rate_limit_empty: KIMI_BLUE_DARK,
-  fastMode: KIMI_BLUE,
-  fastModeShimmer: KIMI_BLUE_SHIMMER,
-  briefLabelYou: KIMI_BLUE,
-  briefLabelClaude: KIMI_BLUE,
+  rate_limit_fill: FABRIC_BLUE,
+  rate_limit_empty: PINCODE_BLUE_DARK,
+  fastMode: FABRIC_BLUE,
+  fastModeShimmer: PINCODE_BLUE_SHIMMER,
+  briefLabelYou: FABRIC_BLUE,
+  briefLabelPincode: PINCODE_BLUE,
   rainbow_red: 'rgb(235,95,87)',
   rainbow_orange: 'rgb(245,139,87)',
   rainbow_yellow: 'rgb(250,195,95)',
@@ -448,15 +448,15 @@ const lightDaltonizedTheme: Theme = {
  * from users' custom terminal ANSI color definitions
  */
 const darkTheme: Theme = {
-  autoAccept: KIMI_BLUE,
-  bashBorder: KIMI_BLUE,
-  claude: KIMI_BLUE, // Legacy token, now Kimi blue
-  startupAccent: KIMI_BLUE,
-  claudeShimmer: KIMI_BLUE_SHIMMER,
-  claudeBlue_FOR_SYSTEM_SPINNER: KIMI_BLUE,
-  claudeBlueShimmer_FOR_SYSTEM_SPINNER: KIMI_BLUE_SHIMMER,
-  permission: KIMI_BLUE,
-  permissionShimmer: KIMI_BLUE_SHIMMER,
+  autoAccept: FABRIC_BLUE,
+  bashBorder: FABRIC_BLUE,
+  pincode: PINCODE_BLUE, // Legacy token, now Pincode blue
+  startupAccent: FABRIC_BLUE,
+  pincodeShimmer: PINCODE_BLUE_SHIMMER,
+  pincodeBlue_FOR_SYSTEM_SPINNER: PINCODE_BLUE,
+  pincodeBlueShimmer_FOR_SYSTEM_SPINNER: PINCODE_BLUE_SHIMMER,
+  permission: FABRIC_BLUE,
+  permissionShimmer: PINCODE_BLUE_SHIMMER,
   planMode: 'rgb(72,150,140)', // Muted sage green
   ide: 'rgb(71,130,200)', // Muted blue
   promptBorder: 'rgb(136,136,136)', // Medium gray
@@ -466,13 +466,13 @@ const darkTheme: Theme = {
   inactive: 'rgb(153,153,153)', // Light gray
   inactiveShimmer: 'rgb(193,193,193)', // Lighter gray for shimmer effect
   subtle: 'rgb(80,80,80)', // Dark gray
-  suggestion: KIMI_BLUE,
-  remember: KIMI_BLUE,
+  suggestion: FABRIC_BLUE,
+  remember: FABRIC_BLUE,
   background: 'rgb(0,204,204)', // Bright cyan
   success: 'rgb(78,186,101)', // Bright green
   error: 'rgb(255,107,128)', // Bright red
   warning: 'rgb(255,193,7)', // Bright amber
-  merged: KIMI_BLUE,
+  merged: FABRIC_BLUE,
   warningShimmer: 'rgb(255,223,57)', // Lighter amber for shimmer
   diffAdded: 'rgb(34,92,43)', // Dark green
   diffRemoved: 'rgb(122,41,54)', // Dark red
@@ -490,11 +490,11 @@ const darkTheme: Theme = {
   pink_FOR_SUBAGENTS_ONLY: 'rgb(219,39,119)', // Pink 600
   cyan_FOR_SUBAGENTS_ONLY: 'rgb(8,145,178)', // Cyan 600
   // Grove colors
-  professionalBlue: KIMI_BLUE,
+  professionalBlue: FABRIC_BLUE,
   // Chrome colors
   chromeYellow: 'rgb(251,188,4)', // Chrome yellow
   // TUI V2 colors
-  clawd_body: KIMI_BLUE,
+  clawd_body: FABRIC_BLUE,
   clawd_background: 'rgb(0,0,0)',
   userMessageBackground: 'rgb(55, 55, 55)', // Lighter grey for better visual contrast
   userMessageBackgroundHover: 'rgb(70, 70, 70)',
@@ -503,12 +503,12 @@ const darkTheme: Theme = {
   bashMessageBackgroundColor: 'rgb(65, 60, 65)',
 
   memoryBackgroundColor: 'rgb(55, 65, 70)',
-  rate_limit_fill: KIMI_BLUE,
-  rate_limit_empty: KIMI_BLUE_DARK,
-  fastMode: KIMI_BLUE,
-  fastModeShimmer: KIMI_BLUE_SHIMMER,
-  briefLabelYou: KIMI_BLUE,
-  briefLabelClaude: KIMI_BLUE,
+  rate_limit_fill: FABRIC_BLUE,
+  rate_limit_empty: PINCODE_BLUE_DARK,
+  fastMode: FABRIC_BLUE,
+  fastModeShimmer: PINCODE_BLUE_SHIMMER,
+  briefLabelYou: FABRIC_BLUE,
+  briefLabelPincode: PINCODE_BLUE,
   rainbow_red: 'rgb(235,95,87)',
   rainbow_orange: 'rgb(245,139,87)',
   rainbow_yellow: 'rgb(250,195,95)',
@@ -530,15 +530,15 @@ const darkTheme: Theme = {
  * to avoid inconsistencies from users' custom terminal ANSI color definitions
  */
 const darkDaltonizedTheme: Theme = {
-  autoAccept: KIMI_BLUE,
-  bashBorder: KIMI_BLUE,
-  claude: KIMI_BLUE, // Legacy token, now Kimi blue
-  startupAccent: KIMI_BLUE,
-  claudeShimmer: KIMI_BLUE_SHIMMER,
-  claudeBlue_FOR_SYSTEM_SPINNER: KIMI_BLUE,
-  claudeBlueShimmer_FOR_SYSTEM_SPINNER: KIMI_BLUE_SHIMMER,
-  permission: KIMI_BLUE,
-  permissionShimmer: KIMI_BLUE_SHIMMER,
+  autoAccept: FABRIC_BLUE,
+  bashBorder: FABRIC_BLUE,
+  pincode: PINCODE_BLUE, // Legacy token, now Pincode blue
+  startupAccent: FABRIC_BLUE,
+  pincodeShimmer: PINCODE_BLUE_SHIMMER,
+  pincodeBlue_FOR_SYSTEM_SPINNER: PINCODE_BLUE,
+  pincodeBlueShimmer_FOR_SYSTEM_SPINNER: PINCODE_BLUE_SHIMMER,
+  permission: FABRIC_BLUE,
+  permissionShimmer: PINCODE_BLUE_SHIMMER,
   planMode: 'rgb(102,153,153)', // Muted gray-teal (works for color-blind)
   ide: 'rgb(71,130,200)', // Muted blue
   promptBorder: 'rgb(136,136,136)', // Medium gray
@@ -548,13 +548,13 @@ const darkDaltonizedTheme: Theme = {
   inactive: 'rgb(153,153,153)', // Light gray
   inactiveShimmer: 'rgb(193,193,193)', // Lighter gray for shimmer effect
   subtle: 'rgb(80,80,80)', // Dark gray
-  suggestion: KIMI_BLUE,
-  remember: KIMI_BLUE,
+  suggestion: FABRIC_BLUE,
+  remember: FABRIC_BLUE,
   background: 'rgb(0,204,204)', // Bright cyan (color-blind friendly)
   success: 'rgb(51,153,255)', // Blue instead of green
   error: 'rgb(255,102,102)', // Bright red
   warning: 'rgb(255,204,0)', // Yellow-orange for deuteranopia
-  merged: KIMI_BLUE,
+  merged: FABRIC_BLUE,
   warningShimmer: 'rgb(255,234,50)', // Lighter yellow-orange for shimmer
   diffAdded: 'rgb(0,68,102)', // Dark blue
   diffRemoved: 'rgb(102,0,0)', // Dark red
@@ -572,11 +572,11 @@ const darkDaltonizedTheme: Theme = {
   pink_FOR_SUBAGENTS_ONLY: 'rgb(255,153,204)', // Bright pink
   cyan_FOR_SUBAGENTS_ONLY: 'rgb(102,204,204)', // Bright cyan
   // Grove colors
-  professionalBlue: KIMI_BLUE,
+  professionalBlue: FABRIC_BLUE,
   // Chrome colors
   chromeYellow: 'rgb(251,188,4)', // Chrome yellow
   // TUI V2 colors
-  clawd_body: KIMI_BLUE,
+  clawd_body: FABRIC_BLUE,
   clawd_background: 'rgb(0,0,0)',
   userMessageBackground: 'rgb(55, 55, 55)', // Lighter grey for better visual contrast
   userMessageBackgroundHover: 'rgb(70, 70, 70)',
@@ -585,12 +585,12 @@ const darkDaltonizedTheme: Theme = {
   bashMessageBackgroundColor: 'rgb(65, 60, 65)',
 
   memoryBackgroundColor: 'rgb(55, 65, 70)',
-  rate_limit_fill: KIMI_BLUE,
-  rate_limit_empty: KIMI_BLUE_DARK,
-  fastMode: KIMI_BLUE,
-  fastModeShimmer: KIMI_BLUE_SHIMMER,
-  briefLabelYou: KIMI_BLUE,
-  briefLabelClaude: KIMI_BLUE,
+  rate_limit_fill: FABRIC_BLUE,
+  rate_limit_empty: PINCODE_BLUE_DARK,
+  fastMode: FABRIC_BLUE,
+  fastModeShimmer: PINCODE_BLUE_SHIMMER,
+  briefLabelYou: FABRIC_BLUE,
+  briefLabelPincode: PINCODE_BLUE,
   rainbow_red: 'rgb(235,95,87)',
   rainbow_orange: 'rgb(245,139,87)',
   rainbow_yellow: 'rgb(250,195,95)',

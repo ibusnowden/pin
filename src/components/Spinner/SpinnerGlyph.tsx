@@ -7,7 +7,7 @@ const DEFAULT_CHARACTERS = getDefaultCharacters();
 const SPINNER_FRAMES = [...DEFAULT_CHARACTERS, ...[...DEFAULT_CHARACTERS].reverse()];
 const REDUCED_MOTION_DOT = '●';
 const REDUCED_MOTION_CYCLE_MS = 2000; // 2-second cycle: 1s visible, 1s dim
-const KIMI_BLUE = {
+const PINCODE_BLUE = {
   r: 212,
   g: 175,
   b: 55
@@ -51,7 +51,7 @@ export function SpinnerGlyph(t0) {
     const baseColorStr = theme[messageColor];
     const baseRGB = baseColorStr ? parseRGB(baseColorStr) : null;
     if (baseRGB) {
-      const interpolated = interpolateColor(baseRGB, KIMI_BLUE, stalledIntensity);
+      const interpolated = interpolateColor(baseRGB, PINCODE_BLUE, stalledIntensity);
       return <Box flexWrap="wrap" height={1} width={2}><Text color={toRGBColor(interpolated)}>{spinnerChar}</Text></Box>;
     }
     const color = messageColor;

@@ -5,7 +5,7 @@ export default () =>
   ({
     type: 'local-jsx',
     name: 'login',
-    description: 'Save or switch your Kimi API key',
+    description: 'Save or switch your Pincode API key',
     isEnabled: () => !isEnvTruthy(process.env.DISABLE_LOGIN_COMMAND),
     load: () => import('./login.js'),
   }) satisfies Command

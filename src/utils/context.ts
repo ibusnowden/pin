@@ -3,7 +3,7 @@ import { CONTEXT_1M_BETA_HEADER } from '../constants/betas.js'
 import { getGlobalConfig } from './config.js'
 import { isEnvTruthy } from './envUtils.js'
 import { getCanonicalName } from './model/model.js'
-import { LOCAL_DEFAULT_MODEL } from './model/local.js'
+import { LOCAL_CONTEXT_WINDOW, LOCAL_DEFAULT_MODEL } from './model/local.js'
 import { getModelCapability } from './model/modelCapabilities.js'
 
 // Model context window size (200k tokens for all models right now)
@@ -70,6 +70,11 @@ export function getContextWindowForModel(
   // [1m] suffix — explicit client-side opt-in, respected over all detection
   if (has1mContext(model)) {
     return 1_000_000
+  }
+
+  // Local vLLM model — use the configured hardware limit directly
+  if (getCanonicalName(model) === LOCAL_DEFAULT_MODEL) {
+    return LOCAL_CONTEXT_WINDOW
   }
 
   const cap = getModelCapability(model)

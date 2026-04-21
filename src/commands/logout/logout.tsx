@@ -73,7 +73,7 @@ export async function call(): Promise<React.ReactNode> {
   await performLogout({
     clearOnboarding: true
   });
-  const message = <Text>Successfully removed your saved Kimi API key.</Text>;
+  const message = <Text>Successfully removed your saved Pincode API key.</Text>;
   setTimeout(() => {
     gracefulShutdownSync(0, 'logout');
   }, 200);

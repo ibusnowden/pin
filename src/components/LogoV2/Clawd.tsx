@@ -11,7 +11,7 @@ type Props = {
   pose?: ClawdPose;
 };
 
-const KIMI_ASCII = [
+const PINCODE_ASCII = [
   'PPPP  III  N   N',
   'P   P  I   NN  N',
   'PPPP   I   N N N',
@@ -22,7 +22,7 @@ const KIMI_ASCII = [
 export function Clawd(_props: Props = {}): React.ReactNode {
   return (
     <Box flexDirection="column" alignItems="center">
-      {KIMI_ASCII.map(line => (
+      {PINCODE_ASCII.map(line => (
         <Text key={line} color="clawd_body">
           {line}
         </Text>

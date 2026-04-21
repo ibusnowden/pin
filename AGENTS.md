@@ -1,6 +1,6 @@
 # AGENTS.md
 
-This file provides guidance to Codex when working with Kimi 2.6 Code.
+This file provides guidance to coding agents when working with Pincode.
 
 ## Common commands
 
@@ -24,13 +24,13 @@ bun run compile
 bun run dev
 ```
 
-Run the built binary with `./cli` or `./cli-dev`. Set `MOONSHOT_API_KEY` in the environment or use `/login` to save a Moonshot API key locally.
+Run the built binary with `./cli` or `./cli-dev`. Set `LOCAL_API_KEY` in the environment or use `/login` to save a local vLLM API key locally.
 
 ## High-level architecture
 
 - **Entry point/UI loop**: src/entrypoints/cli.tsx bootstraps the CLI, with the main interactive UI in src/screens/REPL.tsx (Ink/React).
 - **Command/tool registries**: src/commands.ts registers slash commands; src/tools.ts registers tool implementations. Implementations live in src/commands/ and src/tools/.
-- **LLM query pipeline**: src/QueryEngine.ts coordinates message flow, tool use, and Kimi model invocation.
+- **LLM query pipeline**: src/QueryEngine.ts coordinates message flow, tool use, and Qwen 3.6 model invocation.
 - **Core subsystems**:
   - src/services/: API clients, OAuth/MCP integration, analytics stubs
   - src/state/: app state store

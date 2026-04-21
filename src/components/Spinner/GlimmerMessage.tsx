@@ -15,7 +15,7 @@ type Props = {
   shimmerColor: keyof Theme;
   stalledIntensity?: number;
 };
-const KIMI_BLUE = {
+const PINCODE_BLUE = {
   r: 212,
   g: 175,
   b: 55
@@ -88,7 +88,7 @@ export function GlimmerMessage(t0) {
         const baseColorStr = theme[messageColor];
         const baseRGB = baseColorStr ? parseRGB(baseColorStr) : null;
         if (baseRGB) {
-          const interpolated = interpolateColor(baseRGB, KIMI_BLUE, stalledIntensity);
+          const interpolated = interpolateColor(baseRGB, PINCODE_BLUE, stalledIntensity);
           const color = toRGBColor(interpolated);
           let t5;
           if ($[17] !== color) {

@@ -1,12 +1,12 @@
 {
-  "name": "fabric",
+  "name": "pincode",
   "version": "2.1.87",
   "private": true,
   "description": "Terminal-native coding agent powered by Qwen 3.6 on local vLLM.",
   "type": "module",
   "packageManager": "bun@1.3.11",
   "bin": {
-    "fabric": "./cli"
+    "pincode": "./cli"
   },
   "engines": {
     "bun": ">=1.3.11"
