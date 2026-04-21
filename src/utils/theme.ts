@@ -145,12 +145,12 @@ const lightTheme: Theme = {
   warning: 'rgb(150,108,30)', // Amber
   merged: FABRIC_BLUE,
   warningShimmer: 'rgb(200,158,80)', // Lighter amber for shimmer effect
-  diffAdded: 'rgb(105,219,124)', // Light green
-  diffRemoved: 'rgb(255,168,180)', // Light red
-  diffAddedDimmed: 'rgb(199,225,203)', // Very light green
-  diffRemovedDimmed: 'rgb(253,210,216)', // Very light red
-  diffAddedWord: 'rgb(47,157,68)', // Medium green
-  diffRemovedWord: 'rgb(209,69,75)', // Medium red
+  diffAdded: 'rgb(30,160,60)', // Dark green
+  diffRemoved: 'rgb(210,65,80)', // Dark red
+  diffAddedDimmed: 'rgb(100,185,125)', // Medium dark green
+  diffRemovedDimmed: 'rgb(225,135,145)', // Light dark-red
+  diffAddedWord: 'rgb(10,100,30)', // Deep dark green
+  diffRemovedWord: 'rgb(160,15,25)', // Deep red
   // Agent colors
   red_FOR_SUBAGENTS_ONLY: 'rgb(220,38,38)', // Red 600
   blue_FOR_SUBAGENTS_ONLY: 'rgb(37,99,235)', // Blue 600
