@@ -290,6 +290,16 @@ async function* queryLoop(
   // sites.
   let taskBudgetRemaining: number | undefined = undefined
 
+  // Repetition / loop detector (Fix 4). After each turn that issued tool
+  // calls, we record a signature combining (name, input, output) for every
+  // tool_use block. If the last REPETITION_TRIP_LENGTH turns produced the
+  // exact same signature, the agent is stuck — same args AND same output
+  // means no new information is being gained. Abort with a clear error.
+  // Loop-local for the same reason as taskBudgetRemaining (avoid touching
+  // continue sites).
+  const recentTurnSignatures: string[] = []
+  const REPETITION_TRIP_LENGTH = 3
+
   // Snapshot immutable env/statsig/session state once at entry. See QueryConfig
   // for what's included and why feature() gates are intentionally excluded.
   const config = buildQueryConfig()
@@ -650,6 +660,13 @@ async function* queryLoop(
     let attemptWithFallback = true
 
     queryCheckpoint('query_api_loop_start')
+    // Mutable ref captured by onContextOverflow below. When the local vLLM
+    // rejects a request with a 400 because input + max_tokens exceeds the
+    // context window, the callback runs a forced autocompact and records the
+    // compacted messages here so the outer turn loop continues from the
+    // reduced history — otherwise the next iteration would rebuild from the
+    // pre-compaction list and overflow again immediately.
+    const overflowRecovery: { compactedMessages?: Message[] } = {}
     try {
       while (attemptWithFallback) {
         attemptWithFallback = false
@@ -662,6 +679,29 @@ async function* queryLoop(
             thinkingConfig: toolUseContext.options.thinkingConfig,
             tools: toolUseContext.options.tools,
             signal: toolUseContext.abortController.signal,
+            onContextOverflow: async () => {
+              const result = await deps.autocompact(
+                messagesForQuery,
+                toolUseContext,
+                {
+                  systemPrompt,
+                  userContext,
+                  systemContext,
+                  toolUseContext,
+                  forkContextMessages: messagesForQuery,
+                },
+                querySource,
+                tracking,
+                snipTokensFreed,
+                { force: true },
+              )
+              if (!result.wasCompacted || !result.compactionResult) {
+                return null
+              }
+              const compacted = buildPostCompactMessages(result.compactionResult)
+              overflowRecovery.compactedMessages = compacted
+              return { messages: prependUserContext(compacted, userContext) }
+            },
             options: {
               async getToolPermissionContext() {
                 const appState = toolUseContext.getAppState()
@@ -862,6 +902,22 @@ async function* queryLoop(
             }
           }
           queryCheckpoint('query_api_streaming_end')
+
+          // If onContextOverflow fired mid-request and forced a compaction,
+          // adopt the compacted messages before the loop continues — the
+          // rejected request was built from the pre-compaction history, so
+          // `messagesForQuery` must now reflect the recovery state to keep
+          // subsequent turns (and any retries) from re-overflowing.
+          if (overflowRecovery.compactedMessages) {
+            messagesForQuery = overflowRecovery.compactedMessages
+            tracking = {
+              compacted: true,
+              turnId: deps.uuid(),
+              turnCounter: 0,
+              consecutiveFailures: 0,
+            }
+            overflowRecovery.compactedMessages = undefined
+          }
 
           // Yield deferred microcompact boundary message using actual API-reported
           // token deletion count instead of client-side estimates.
@@ -1407,6 +1463,72 @@ async function* queryLoop(
       }
     }
     queryCheckpoint('query_tool_execution_end')
+
+    // Fix 4: repetition detector. Build a signature for this turn's tool calls
+    // (name + input + output) and compare against the last few turns. The
+    // (name, input) pair alone isn't enough — a tool legitimately polled
+    // (e.g. BashTool watching a build) produces fresh output each time. We
+    // only trip when output is also identical, meaning no progress is being
+    // made.
+    if (toolUseBlocks.length > 0) {
+      const turnSignature = toolUseBlocks
+        .map(block => {
+          const matchingResult = toolResults.find(
+            result =>
+              result.type === 'user' &&
+              Array.isArray(result.message.content) &&
+              result.message.content.some(
+                content =>
+                  content.type === 'tool_result' &&
+                  content.tool_use_id === block.id,
+              ),
+          )
+          const resultContent =
+            matchingResult?.type === 'user' &&
+            Array.isArray(matchingResult.message.content)
+              ? matchingResult.message.content.find(
+                  (c): c is ToolResultBlockParam =>
+                    c.type === 'tool_result' && c.tool_use_id === block.id,
+                )
+              : undefined
+          return JSON.stringify({
+            name: block.name,
+            input: block.input,
+            output:
+              resultContent && 'content' in resultContent
+                ? resultContent.content
+                : null,
+          })
+        })
+        .join('|')
+
+      recentTurnSignatures.push(turnSignature)
+      if (recentTurnSignatures.length > REPETITION_TRIP_LENGTH) {
+        recentTurnSignatures.shift()
+      }
+      if (
+        recentTurnSignatures.length === REPETITION_TRIP_LENGTH &&
+        recentTurnSignatures.every(sig => sig === recentTurnSignatures[0])
+      ) {
+        const stuckToolNames = Array.from(
+          new Set(toolUseBlocks.map(b => b.name)),
+        ).join(', ')
+        yield createAssistantAPIErrorMessage({
+          content:
+            `Aborted: agent loop detected — tool ${stuckToolNames} ` +
+            `was called ${REPETITION_TRIP_LENGTH} times in a row with ` +
+            `identical arguments and identical output. The model is not ` +
+            `making progress. Try rephrasing your request, or interrupt ` +
+            `with Esc and provide more guidance.`,
+        })
+        return {
+          reason: 'model_error',
+          error: new Error(
+            `repetition_loop: ${stuckToolNames} stuck after ${REPETITION_TRIP_LENGTH} identical turns`,
+          ),
+        }
+      }
+    }
 
     // Generate tool use summary after tool batch completes — passed to next recursive call
     let nextPendingToolUseSummary:
