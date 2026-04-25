@@ -115,6 +115,24 @@ export const QWEN_3_6_CONFIG = {
   local: LOCAL_DEFAULT_MODEL,
 } as const satisfies ModelConfig
 
+export const QWEN_3_6_27B_DENSE_CONFIG = {
+  firstParty: 'qwen3.6-27b-dense',
+  bedrock: 'qwen3.6-27b-dense',
+  vertex: 'qwen3.6-27b-dense',
+  foundry: 'qwen3.6-27b-dense',
+  openai: 'qwen3.6-27b-dense',
+  local: 'qwen3.6-27b-dense',
+} as const satisfies ModelConfig
+
+export const GEMMA_4_31B_CONFIG = {
+  firstParty: 'gemma4-31b',
+  bedrock: 'gemma4-31b',
+  vertex: 'gemma4-31b',
+  foundry: 'gemma4-31b',
+  openai: 'gemma4-31b',
+  local: 'gemma4-31b',
+} as const satisfies ModelConfig
+
 // OpenAI Codex models
 export const GPT_5_4_CONFIG = {
   firstParty: 'gpt-5.4',
@@ -157,6 +175,8 @@ export const ALL_MODEL_CONFIGS = {
   opus45: CLAUDE_OPUS_4_5_CONFIG,
   opus46: CLAUDE_OPUS_4_6_CONFIG,
   qwen36: QWEN_3_6_CONFIG,
+  qwen36_27b: QWEN_3_6_27B_DENSE_CONFIG,
+  gemma431b: GEMMA_4_31B_CONFIG,
   // OpenAI Codex models
   gpt54: GPT_5_4_CONFIG,
   gpt53codex: GPT_5_3_CODEX_CONFIG,

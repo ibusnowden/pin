@@ -242,9 +242,29 @@ function getQwen36Option(): ModelOption {
   return {
     value: LOCAL_DEFAULT_MODEL,
     label: 'Qwen 3.6',
-    description: 'Qwen 3.6 · Local model running on vLLM',
+    description: 'Qwen 3.6 30B-A3B · Local model running on vLLM',
     descriptionForModel:
-      'Qwen 3.6 - local coding model running on vLLM',
+      'Qwen 3.6 30B-A3B - local coding model running on vLLM',
+  }
+}
+
+function getQwen36_27bDenseOption(): ModelOption {
+  return {
+    value: 'qwen3.6-27b-dense',
+    label: 'Qwen 3.6 27B',
+    description: 'Qwen 3.6 27B Dense · Upstream local base model ID',
+    descriptionForModel:
+      'Qwen 3.6 27B Dense - upstream local base model ID',
+  }
+}
+
+function getGemma431bOption(): ModelOption {
+  return {
+    value: 'gemma4-31b',
+    label: 'Gemma 4 31B',
+    description: 'Gemma 4 31B · Local model running on vLLM',
+    descriptionForModel:
+      'Gemma 4 31B - local coding model running on vLLM',
   }
 }
 
@@ -327,9 +347,15 @@ function getModelOptionsBase(fastMode = false): ModelOption[] {
     ]
   }
 
-  // Local provider: Qwen 3.6 is the supported model family.
+  // Local provider: models served by vLLM behind the LiteLLM router
+  // (see /project/inniang/inference/router/litellm.config.yaml).
   if (getAPIProvider() === 'local') {
-    return [getDefaultOptionForUser(), getQwen36Option()]
+    return [
+      getDefaultOptionForUser(),
+      getQwen36Option(),
+      getQwen36_27bDenseOption(),
+      getGemma431bOption(),
+    ]
   }
 
   // Codex subscribers get OpenAI model options
